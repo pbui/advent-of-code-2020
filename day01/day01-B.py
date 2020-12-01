@@ -33,7 +33,7 @@ def find_triple(numbers, target=2020):
 
 def main():
     numbers = [int(l) for l in sys.stdin]
-    triple    = find_triple(numbers)
+    triple  = find_triple(numbers)
     print(triple[0] * triple[1] * triple[2])
 
 if __name__ == '__main__':
