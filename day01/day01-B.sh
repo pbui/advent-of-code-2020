@@ -1,19 +1,25 @@
 #!/bin/sh
 
-for number in $(cat $1); do
-    pair=$(awk -v TARGET=$((2020 - $number)) '
+# Functions
+
+find_triple() {
+    echo "$3" | awk -v NUMBER=$1 -v TARGET=$2 '
 	{
 	    difference = TARGET - $1
 
 	    if ($1 in differences) {
-		print difference, $1
+		print NUMBER, $1, difference
 	    } else {
 		differences[difference] = $1
 	    }
 	}
-    ' < $1)
-    if [ -n "$pair" ]; then
-    	echo $number $pair | tr ' ' '*' | bc
-    	break
-    fi
-done
+    '
+}
+
+# Main Execution
+
+NUMBERS=$(cat /dev/stdin)
+
+for number in $NUMBERS; do
+    find_triple $number $((2020 - $number)) "$NUMBERS" | tr ' ' '*' | bc
+done | uniq
