@@ -33,11 +33,7 @@ def contains(rules, source, target, first=False):
     if source == target:
         return not first
 
-    for neighbor in rules[source]:
-        if contains(rules, neighbor, target):
-            return True
-
-    return False
+    return any(contains(rules, neighbor, target) for neighbor in rules[source])
 
 # Main Execution
 
