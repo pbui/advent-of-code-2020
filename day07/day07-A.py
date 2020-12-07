@@ -29,7 +29,10 @@ def parse_rules():
         rules |= rule
     return rules
 
-def contains_target(rules, source, target):
+def contains(rules, source, target):
+    if source == target:
+        return False
+
     frontier = [source]
     visited  = set()
 
@@ -52,13 +55,7 @@ def contains_target(rules, source, target):
 
 def main():
     rules = parse_rules()
-    count = 0
-
-    for source in rules:
-        if source == TARGET:
-            continue
-
-        count += int(contains_target(rules, source, TARGET))
+    count = sum(1 for source in rules if contains(rules, source, TARGET))
 
     print(count)
 

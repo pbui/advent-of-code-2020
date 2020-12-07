@@ -30,10 +30,9 @@ def parse_rules():
     return rules
 
 def count_bags(rules, source):
-    count = 0
-    for neighbor, amount in rules[source].items():
-        count += amount * (count_bags(rules, neighbor) + 1)
-    return count
+    return sum(
+        number * (count_bags(rules, bag) + 1) for bag, number in rules[source].items()
+    )
 
 # Main Execution
 
