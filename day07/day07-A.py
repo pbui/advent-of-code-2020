@@ -41,7 +41,7 @@ def contains(rules, source, target):
         if bag == target:
             return True
 
-        for neighbor, _ in rules[bag].items():
+        for neighbor in rules[bag]:
             frontier.append(neighbor)
 
     return False
