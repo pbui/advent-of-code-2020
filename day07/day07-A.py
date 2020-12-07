@@ -34,19 +34,14 @@ def contains(rules, source, target):
         return False
 
     frontier = [source]
-    visited  = set()
 
     while frontier:
-        color = frontier.pop()
-        if color in visited:
-            continue
+        bag = frontier.pop()
 
-        if color == target:
+        if bag == target:
             return True
 
-        visited.add(color)
-
-        for neighbor, amount in rules[color].items():
+        for neighbor, amount in rules[bag].items():
             frontier.append(neighbor)
 
     return False
