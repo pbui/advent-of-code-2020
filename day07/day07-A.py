@@ -29,20 +29,13 @@ def parse_rules():
         rules |= rule
     return rules
 
-def contains(rules, source, target):
+def contains(rules, source, target, first=False):
     if source == target:
-        return False
+        return not first
 
-    frontier = [source]
-
-    while frontier:
-        bag = frontier.pop()
-
-        if bag == target:
+    for neighbor in rules[source]:
+        if contains(rules, neighbor, target):
             return True
-
-        for neighbor in rules[bag]:
-            frontier.append(neighbor)
 
     return False
 
@@ -50,7 +43,7 @@ def contains(rules, source, target):
 
 def main():
     rules = parse_rules()
-    count = sum(1 for source in rules if contains(rules, source, TARGET))
+    count = sum(1 for source in rules if contains(rules, source, TARGET, True))
 
     print(count)
 
