@@ -7,26 +7,18 @@ import sys
 
 CONTAIN_RE = r'^(.*) bags contain\s(.*)$'
 TARGETS_RE = r'(\d+) ([a-z]+ [a-z]+) bags*[,.]' 
-SOURCE     = 'shiny gold'
 
 # Functions
 
-def parse_rule():
-    try:
-        source, targets = re.findall(CONTAIN_RE, sys.stdin.readline().strip())[0]
-    except IndexError:
-        return None
-
-    rule = {source: {}}
-    for count, target in re.findall(TARGETS_RE, targets):
-        rule[source][target] = int(count)
-
-    return rule
-
 def parse_rules():
     rules = {}
-    while rule := parse_rule():
-        rules |= rule
+
+    for line in sys.stdin:
+        source, targets = re.findall(CONTAIN_RE, line.strip())[0]
+        rules[source]   = {}
+        for count, target in re.findall(TARGETS_RE, targets):
+            rules[source][target] = int(count)
+
     return rules
 
 def count_bags(rules, source):
@@ -38,7 +30,7 @@ def count_bags(rules, source):
 
 def main():
     rules = parse_rules()
-    bags  = count_bags(rules, SOURCE)
+    bags  = count_bags(rules, 'shiny gold')
 
     print(bags)
 
