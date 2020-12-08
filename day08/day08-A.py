@@ -9,7 +9,6 @@ class Console:
         self.accumulator = 0
         self.code        = []
         self.counter     = 0
-
         self.operations  = {
             'nop': self.do_nop,
             'acc': self.do_acc,
