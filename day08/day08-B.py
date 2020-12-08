@@ -16,7 +16,7 @@ class Console:
         }
 
     def load(self, stream=sys.stdin):
-        for line in sys.stdin:
+        for line in stream:
             operation, argument = line.strip().split()
             self.code.append((
                 operation, int(argument)
