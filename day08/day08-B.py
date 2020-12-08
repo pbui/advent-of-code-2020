@@ -62,20 +62,20 @@ def main():
     # search by swapping each jmp or nop code one at a time, executing the
     # console, and checking if it terminates.
     original_code = console.code[:]
-    for index, (operation, argument) in enumerate(original_code):
+    for instruction, (operation, argument) in enumerate(original_code):
         if operation == 'nop':
             continue
 
         # Swap jmp and nop operations.
-        new_operation       = 'jmp' if operation == 'nop' else 'nop'
-        console.code[index] = (new_operation, argument)
+        new_operation             = 'jmp' if operation == 'nop' else 'nop'
+        console.code[instruction] = (new_operation, argument)
 
         # Check if console terminates; end search when it does.
         if console.run(reset=True):
             break
 
         # Restore instruction to previous operation.
-        console.code[index] = (operation, argument)
+        console.code[instruction] = (operation, argument)
             
     print(console.accumulator)
 
