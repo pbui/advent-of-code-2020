@@ -28,7 +28,7 @@ class Console:
     
     def do_acc(self, argument):
         self.accumulator += argument
-        self.counter += 1
+        self.counter     += 1
 
     def do_jmp(self, argument):
         self.counter += argument
