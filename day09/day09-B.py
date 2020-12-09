@@ -9,10 +9,30 @@ TARGET = 1492208709 # From Part A
 # Functions
 
 def find_contiguous_array(numbers, target):
+    ''' Linear solution from @Nuolong '''
+    start = 0
+    end   = 1
+    total = numbers[start]
+
+    while end < len(numbers):
+        while total > target and start < end:
+            total -= numbers[start]
+            start += 1
+
+        if total == target:
+            return numbers[start:end + 1]
+        
+        total += numbers[end]
+        end   += 1
+
+
+    '''
     for start in range(len(numbers)):
         for end in range(start, len(numbers)):
             if sum(numbers[start:end]) == TARGET:
                 return numbers[start:end]
+    '''
+    
     return []
 
 # Main Execution
