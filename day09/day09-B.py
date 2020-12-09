@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 
-import collections
-import itertools
 import sys
 
 # Constants
 
-TARGET = 1492208709
+TARGET = 1492208709 # From Part A
 
 # Functions
 
