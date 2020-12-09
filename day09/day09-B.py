@@ -15,16 +15,15 @@ def find_contiguous_array(numbers, target):
     total = numbers[start]
 
     while end < len(numbers):
-        while total > target and start < end:
-            total -= numbers[start]
-            start += 1
-
         if total == target:
             return numbers[start:end + 1]
-        
-        total += numbers[end]
-        end   += 1
 
+        if total > target:
+            total -= numbers[start]
+            start += 1
+        else:
+            total += numbers[end]
+            end   += 1
 
     '''
     for start in range(len(numbers)):
