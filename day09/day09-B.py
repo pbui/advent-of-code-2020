@@ -29,7 +29,7 @@ def find_contiguous_array(numbers, target):
     '''
     for start in range(len(numbers)):
         for end in range(start, len(numbers)):
-            if sum(numbers[start:end]) == TARGET:
+            if sum(numbers[start:end]) == target:
                 return numbers[start:end]
     '''
     
