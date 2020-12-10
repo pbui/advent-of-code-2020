@@ -6,10 +6,9 @@ import sys
 # Functions
 
 def count_differences(adapters):
-    counts = collections.defaultdict(int)
-    for index in range(1, len(adapters)):
-        counts[adapters[index] - adapters[index - 1]] += 1
-    return counts
+    return collections.Counter(
+        adapters[i] - adapters[i - 1] for i in range(1, len(adapters))
+    )
 
 # Main Execution
 
