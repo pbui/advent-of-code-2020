@@ -14,12 +14,10 @@ def count_differences(adapters):
 # Main Execution
 
 def main():
-    adapters = [int(a) for a in sys.stdin]
-    adapters.append(0)
-    adapters.append(max(adapters) + 3)
-    adapters.sort()
-
+    adapters    = [int(a) for a in sys.stdin]
+    adapters    = sorted([0] + adapters + [max(adapters) + 3])
     differences = count_differences(adapters)
+
     print(differences[1] * differences[3])
 
 if __name__ == '__main__':
