@@ -38,8 +38,8 @@ def count_neighbors(grid, row, col):
     return count
 
 def search_direction(grid, row, col, dx, dy):
-    width    = len(grid[0]) - 1
-    height   = len(grid) - 1
+    width  = len(grid[0]) - 1
+    height = len(grid) - 1
 
     while (0 < row < height) and (0 < col < width):
         row += dx
