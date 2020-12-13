@@ -3,8 +3,6 @@
 import math
 import sys
 
-# Constants
-
 # Functions
 
 def read_input():
