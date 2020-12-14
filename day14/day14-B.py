@@ -29,6 +29,16 @@ def expand_addresses(address):
             new_address = new_address.replace('X', product.pop(), 1)
         yield int(new_address, 2)
 
+def expand_addresses(address, index=0):
+    ''' Alternative recursive solution '''
+    if index == WORD_SIZE:
+        yield address
+    elif address[index] == 'X':
+        yield from expand_addresses(address[:index] + '0' + address[index+1:], index + 1)
+        yield from expand_addresses(address[:index] + '1' + address[index+1:], index + 1)
+    else:
+        yield from expand_addresses(address, index + 1)
+
 def process_instructions():
     memory = {}
     mask   = '0'*WORD_SIZE
