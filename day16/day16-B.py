@@ -29,17 +29,13 @@ def is_ticket_valid(rules, ticket):
 
 def find_matches(rules, tickets):
     matches = collections.defaultdict(list)
-
-    for index in range(len(tickets[0])):
-        for field, ranges in rules.items():
-            found = True
-            for ticket in tickets:
-                if not any(s <= ticket[index] <= e for s, e in ranges):
-                    found = False
-                    break
-
-            if found:
-                matches[field].append(index)
+        
+    for field, ranges in rules.items():
+        matches[field] = [
+            index for index in range(len(tickets[0])) if all(
+                any(s <= ticket[index] <= e for s, e in ranges) for ticket in tickets
+            )
+        ]
 
     return matches
 
