@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import collections
 import functools
 import itertools
 import operator
@@ -28,7 +27,7 @@ def is_ticket_valid(rules, ticket):
     return all(any(s <= v <= e for s, e in flatten(rules.values())) for v in ticket)
 
 def find_matches(rules, tickets):
-    matches = collections.defaultdict(list)
+    matches = {}
         
     for field, ranges in rules.items():
         matches[field] = [
