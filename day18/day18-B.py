@@ -9,29 +9,16 @@ PARENS    = ('(', ')')
 
 # Functions
 
-def parse_token(stream):
-    while stream and stream[0].isspace():
-        stream.pop(0)
-
-    token = ''
-    if stream:
-        if stream[0] in ('(', ')', '+', '*'):
-            token = stream.pop(0)
-        elif stream[0].isdigit():
-            while stream and stream[0].isdigit():
-                token += stream.pop(0)
-            token = int(token)
-
-    return token
-
-def parse_expression(stream):
+def parse_expression(tokens):
     ''' Parse expression from infix to RPN '''
     queue = []
     stack = []
 
-    while token := parse_token(stream):
-        if isinstance(token, int):
-            queue.append(token)
+    while tokens:
+        token = tokens.pop(0)
+
+        if token.isdigit():
+            queue.append(int(token))
         elif token == '(':
             stack.append(token)
         elif token == ')':
@@ -70,7 +57,8 @@ def evaluate(expression):
 def main():
     total = 0
     for line in sys.stdin:
-        expression = parse_expression(list(line))
+        tokens     = [token for token in line if not token.isspace()]
+        expression = parse_expression(tokens)
         evaluation = evaluate(expression)
         total     += evaluation
 
