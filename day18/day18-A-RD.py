@@ -4,65 +4,50 @@ import collections
 import operator
 import sys
 
+# Constants
+
+PRECEDENCE = {
+    '+' : 1,
+    '*' : 1,
+}
+
 # Structures
 
-Node = collections.namedtuple('Node', 'value left right')
+Node = collections.namedtuple('Node', 'op lhs rhs')
 
 # Functions
 
-def parse_token(stream):
-    while stream and stream[0].isspace():
-        stream.pop(0)
+def parse_expression(tokens, precedence=0):
+    lhs = tokens.pop(0)
 
-    token = ''
-    if stream:
-        if stream[0] in ('(', ')', '+', '*'):
-            token = stream.pop(0)
-        elif stream[0].isdigit():
-            while stream and stream[0].isdigit():
-                token += stream.pop(0)
-            token = int(token)
+    if lhs == '(':
+        lhs = parse_expression(tokens)
+        tokens.pop(0)
 
-    return token
+    while tokens and PRECEDENCE.get(tokens[0], -1) >= precedence:
+        op  = tokens.pop(0)
+        rhs = parse_expression(tokens, PRECEDENCE[op] + 1)
+        lhs = Node(op, lhs, rhs)
 
-def parse_expression(stream):
-    left  = parse_token(stream)
-    value = None
-    right = None
-
-    if isinstance(left, int):
-        value = parse_token(stream)
-        if not value or value == ')':
-            return left
-        right = parse_expression(stream)
-
-    if left == '(':
-        left  = parse_expression(stream)
-        value = parse_token(stream)
-        if not value or value == ')':
-            return left
-        right = parse_expression(stream)
-
-    return Node(value, left, right)
+    return lhs
 
 def evaluate(expression):
-    if isinstance(expression, int):
-        return expression
+    if isinstance(expression, str):
+        return int(expression)
 
-    if expression.value == '+':
-        return evaluate(expression.left) + evaluate(expression.right)
+    if expression.op == '+':
+        return evaluate(expression.lhs) + evaluate(expression.rhs)
     else:
-        return evaluate(expression.left) * evaluate(expression.right)
+        return evaluate(expression.lhs) * evaluate(expression.rhs)
 
 # Main Execution
 
 def main():
     total = 0
     for line in sys.stdin:
-        expression = parse_expression(list(line))
-        print(expression)
+        tokens     = [token for token in line if not token.isspace()]
+        expression = parse_expression(tokens)
         evaluation = evaluate(expression)
-        print(evaluation)
         total     += evaluation
 
     print(total)
