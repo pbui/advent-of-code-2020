@@ -16,12 +16,18 @@ Node = collections.namedtuple('Node', 'op lhs rhs')
 
 # Functions
 
-def parse_expression(tokens, precedence=0):
-    lhs = tokens.pop(0)
-
-    if lhs == '(':
-        lhs = parse_expression(tokens)
+def parse_primary(tokens):
+    if tokens[0] == '(':
         tokens.pop(0)
+        primary = parse_expression(tokens)
+        tokens.pop(0)
+    else:
+        primary = tokens.pop(0)
+
+    return primary
+
+def parse_expression(tokens, precedence=0):
+    lhs = parse_primary(tokens)
 
     while tokens and PRECEDENCE.get(tokens[0], -1) >= precedence:
         op  = tokens.pop(0)
