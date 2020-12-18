@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
-import collections
-import operator
 import sys
 
-# Structures
+# Constants
 
-Node = collections.namedtuple('Node', 'value left right')
+OPERATORS = ('+', '*')
+PARENS    = ('(', ')')
 
 # Functions
 
@@ -26,40 +25,52 @@ def parse_token(stream):
     return token
 
 def parse_expression(stream):
-    right = parse_token(stream)
-    value = None
-    left  = None
+    ''' Parse expression from infix to RPN '''
+    queue = []
+    stack = []
 
-    if isinstance(right, int):
-        value = parse_token(stream)
-        if not value or value == '(':
-            return right
-        left  = parse_expression(stream)
+    while token := parse_token(stream):
+        if isinstance(token, int):
+            queue.append(token)
+        elif token == '(':
+            stack.append(token)
+        elif token == ')':
+            while stack[-1] not in PARENS:
+                queue.append(stack.pop())
+            stack.pop()
+        elif token in OPERATORS:
+            while stack and stack[-1] in OPERATORS:
+                queue.append(stack.pop())
+            stack.append(token)
 
-    if right == ')':
-        right = parse_expression(stream)
-        value = parse_token(stream)
-        if not value or value == '(':
-            return right
-        left  = parse_expression(stream)
+    while stack and stack[-1] in OPERATORS:
+        queue.append(stack.pop())
 
-    return Node(value, left, right)
+    return queue
 
 def evaluate(expression):
-    if isinstance(expression, int):
-        return expression
+    ''' Evaluate RPN expression '''
+    stack = []
 
-    if expression.value == '+':
-        return evaluate(expression.left) + evaluate(expression.right)
-    else:
-        return evaluate(expression.left) * evaluate(expression.right)
+    while expression:
+        token = expression.pop(0)
+        if token in OPERATORS:
+            operand2 = stack.pop()
+            operand1 = stack.pop()
+            result   = operand1 + operand2 if token == '+' else operand1 * operand2
+        else:
+            result   = token
+            
+        stack.append(result)
+
+    return stack[0]
 
 # Main Execution
 
 def main():
     total = 0
     for line in sys.stdin:
-        expression = parse_expression(list(reversed(line)))
+        expression = parse_expression(list(line))
         evaluation = evaluate(expression)
         total     += evaluation
 
