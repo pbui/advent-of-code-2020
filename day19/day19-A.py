@@ -14,7 +14,7 @@ def read_rules():
 
     return rules
 
-def match_rule(rules, message, curr_state='0', indent=0):
+def match_rule(rules, message, curr_state='0'):
     # Base: Match terminal
     if rules[curr_state][0][0].isalpha():
         return message[1:] if rules[curr_state][0][0] == message[0] else message
@@ -23,9 +23,8 @@ def match_rule(rules, message, curr_state='0', indent=0):
     for states in rules[curr_state]:    # Match any
         new_message = message[:]
         all_matched = True
-
         for next_state in states:       # Match all
-            next_message = match_rule(rules, new_message, next_state, indent + 2)
+            next_message = match_rule(rules, new_message, next_state)
             if next_message == new_message:
                 all_matched = False
                 break
