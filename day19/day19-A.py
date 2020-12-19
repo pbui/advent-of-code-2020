@@ -17,20 +17,24 @@ def read_rules():
 def match_rule(rules, message, curr_state='0', indent=0):
     # Base: Match terminal
     if rules[curr_state][0][0].isalpha():
-        return message[1:] if rules[curr_state][0][0] == message[0] else None
+        return message[1:] if rules[curr_state][0][0] == message[0] else message
 
     # Recursion: Match all next states
     for states in rules[curr_state]:    # Match any
         new_message = message[:]
-        for next_state in states:       # Match all
-            new_message = match_rule(rules, new_message, next_state, indent + 2)
-            if new_message is None:
-                break
+        all_matched = True
 
-        if new_message is not None:
+        for next_state in states:       # Match all
+            next_message = match_rule(rules, new_message, next_state, indent + 2)
+            if next_message == new_message:
+                all_matched = False
+                break
+            new_message = next_message
+
+        if all_matched:
             return new_message
 
-    return None
+    return message
 
 # Main Execution
 
@@ -39,7 +43,8 @@ def main():
     count = 0
 
     while message := sys.stdin.readline().strip():
-        if match_rule(rules, list(message)) == []:
+        remaining = match_rule(rules, list(message))
+        if not remaining:
             count += 1
 
     print(count)
