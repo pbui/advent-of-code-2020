@@ -19,7 +19,7 @@ def match_rule(rules, message, curr_state='0'):
     if rules[curr_state][0][0].isalpha():
         return message[1:] if rules[curr_state][0][0] == message[0] else message
 
-    # Recursion: Match all next states
+    # Recursion: Match rule states
     for states in rules[curr_state]:    # Match any
         new_message = message[:]
         all_matched = True
