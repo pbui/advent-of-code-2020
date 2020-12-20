@@ -43,24 +43,24 @@ def hash_edges(tiles):
 
     return edges
 
-def count_neighbors(edges):
-    counts = collections.defaultdict(set)
+def find_sides(edges):
+    sides = collections.defaultdict(set)
 
     for edge, tiles in edges.items():
         for tile1 in tiles:
             for tile2 in tiles:
                 if tile1 != tile2:
-                    counts[tile1].add(tile2)
+                    sides[tile1].add(tile2)
 
-    return counts
+    return sides
 
 # Main Execution
 
 def main():
     tiles   = read_tiles()
     edges   = hash_edges(tiles)
-    counts  = count_neighbors(edges)
-    corners = [tile for tile, neighbors in counts.items() if len(neighbors) == 2]
+    sides   = find_sides(edges)
+    corners = [tile for tile, neighbors in sides.items() if len(neighbors) == 2]
     result  = functools.reduce(operator.mul, corners)
 
     print(result)
