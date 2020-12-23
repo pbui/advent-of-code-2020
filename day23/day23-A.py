@@ -75,7 +75,7 @@ def play_game(cups, moves=100):
         while destination_label in three_cups:
             destination_label -= 1
 
-        # If destnation is below lowest value (1), then wrap to highest (9)
+        # If destnation is below lowest value (1), then wrap to highest in remaining cups
         if destination_label == 0:
             destination_label = find_max(current)
 
